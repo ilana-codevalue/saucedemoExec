@@ -3,7 +3,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Test.Infrastructure
 {
-    internal abstract class BasePage
+    public abstract class BasePage
     {
         public readonly IWebDriver driver;
         public readonly WebDriverWait wait;
@@ -11,7 +11,17 @@ namespace Test.Infrastructure
         public BasePage(IWebDriver _driver)
         {
             driver = _driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            WaitForPageLoad();
+        }
+
+        protected virtual void WaitForPageLoad()
+        {
+            /**
+             * Assert each page loading automaticcaly while
+             * inherited page override with its own implementation 
+             */
         }
 
     }
