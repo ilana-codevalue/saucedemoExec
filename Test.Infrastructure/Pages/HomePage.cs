@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace Test.Infrastructure
+namespace Test.Infrastructure.Pages
 {
     public class HomePage
     {
@@ -10,7 +10,7 @@ namespace Test.Infrastructure
 
         protected readonly IWebDriver driver;
 
-        public HomePage() 
+        public HomePage()
         {
             driver = new ChromeDriver(DRIVER_PATH);
             driver.Manage().Window.Maximize();

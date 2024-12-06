@@ -1,4 +1,4 @@
-using Test.Infrastructure;
+using Test.Infrastructure.Pages;
 
 namespace Test.Tests
 {
