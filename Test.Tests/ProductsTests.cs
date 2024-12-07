@@ -89,18 +89,82 @@ namespace Test.Tests
 
 
         [Test]
-        public void SuccessToAddItemToCart()
+        public void SuccessClickAddItemToCartBtn()
         {
-            //var activeSorting = productsPage
-            //    .SelectSortingProducts(SortingOptions.Price_High_To_Low);
+            var products = productsPage.GetAllProductElements();
+            var productToAdd = products[0];
 
-            //Assert.That(activeSorting, Does.Contain("high to low"));
+            productsPage
+                .AddOrRemoveProductToCart(productToAdd);
+           
+            var btnText = productsPage.GetProductAddToCartBtnText(productToAdd);
+            Assert.That(btnText, Is.EqualTo("Remove"));
+        }
 
-            //var productPriceList = productsPage.GetProductPriceList();
-            //var sortedList = productsPage.GetProductPriceList();
-            //sortedList.Sort((x, y) => y.CompareTo(x)); // sort in desending order
+        [Test]
+        public void SuccessClickRemoveBtn()
+        {
+            // pre conditions
+            var products = productsPage.GetAllProductElements();
+            var productToAdd = products[1];
 
-            //Assert.That(productPriceList.SequenceEqual(sortedList));
+            productsPage.AddOrRemoveProductToCart(productToAdd);
+
+            var btnText = productsPage.GetProductAddToCartBtnText(productToAdd);
+            Assert.That(btnText, Is.EqualTo("Remove"));
+
+            // Act
+            productsPage
+                .AddOrRemoveProductToCart(productToAdd, true);
+
+            btnText = productsPage.GetProductAddToCartBtnText(productToAdd);
+            Assert.That(btnText, Is.EqualTo("Add to cart"));
+        }
+
+        [Test]
+        public void SuccessAddItemToCart()
+        {
+            var products = productsPage.GetAllProductElements();
+            var productToAdd = products[0];
+            var productDetails = productsPage.GetProductDetails(productToAdd);
+
+            var cartPage = productsPage
+                .AddOrRemoveProductToCart(productToAdd)
+                .ClickOnCartIcon();
+
+            var IsProducrInCart = cartPage.IsItemExists(productDetails.name);
+            Assert.That(IsProducrInCart, Is.True);
+        }
+        [Test]
+        public void SuccessRemoveItemFromCart()
+        {
+            
+            var products = productsPage.GetAllProductElements();
+            var productToAdd = products[0];
+            var productDetails = productsPage.GetProductDetails(productToAdd);
+
+            // pre conditions
+            var cartPage = productsPage
+                .AddOrRemoveProductToCart(productToAdd)
+                .ClickOnCartIcon();
+
+            var IsProducrInCart = cartPage.IsItemExists(productDetails.name);
+            Assert.That(IsProducrInCart, Is.True);
+
+
+            // Act
+            productsPage = cartPage
+                .ClickOnContinueShoping();
+            
+            productToAdd = productsPage.GetAllProductElements()[0];
+            
+            cartPage =
+            productsPage
+                .AddOrRemoveProductToCart(productToAdd, true)
+                .ClickOnCartIcon();
+
+            IsProducrInCart = cartPage.IsItemExists(productDetails.name);
+            Assert.That(IsProducrInCart, Is.False);
         }
 
 

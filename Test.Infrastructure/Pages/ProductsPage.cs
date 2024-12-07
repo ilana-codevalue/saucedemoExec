@@ -37,7 +37,7 @@ namespace Test.Infrastructure.Pages
             return new Product(
                 productEl.FindElement(productName).Text,
                 productEl.FindElement(productDescription).Text,
-                productEl.FindElement(productPrice).Text,
+                productEl.FindElement(productPrice).Text.Replace("$",""),
                 productEl.FindElement(productImage),
                 productEl.FindElement(productAddToCartBtn)
             );
@@ -92,12 +92,74 @@ namespace Test.Infrastructure.Pages
             return Driver.FindElement(sortingBtnActiveOption).Text;
         }
 
-        public void AddProductToCart(IWebElement productEl)
+        public ProductsPage AddOrRemoveProductToCart(IWebElement productEl, bool IsRemove = false)
         {
-            productEl.FindElement(productAddToCartBtn).Click();
+            if(IsRemove)
+            {
+                if (GetProductAddToCartBtnText(productEl) == "Remove")
+                {
+                    productEl.FindElement(productAddToCartBtn).Click();
+                }
+                
+            }
+            else
+            {
+                if (GetProductAddToCartBtnText(productEl) == "Add to cart")
+                {
+                    productEl.FindElement(productAddToCartBtn).Click();
+                }
+            }
+            
+            return this;
         }
 
         public string GetProductAddToCartBtnText(IWebElement productEl) => productEl.FindElement(productAddToCartBtn).Text;
+
+        public ProductPage ClickOnProduct(IWebElement prodictEl)
+        {
+            Driver.FindElement(prodictEl, productName).Click();
+            return new ProductPage(driver);
+        }
+
+        public ProductPage SelectRandomProductAndGoToProductPage()
+        {
+            var allProductsElements = GetAllProductElements();
+            var rnd = new Random();
+            int randomProductNumber = rnd.Next(0, allProductsElements.Count - 1);
+            Driver.FindElement(allProductsElements[randomProductNumber], productName).Click();
+            
+            return new ProductPage(driver);
+        }
+
+        public CartPage CreatSampleCartListAndGoToCartPage()
+        {
+            var allProductsElements = GetAllProductElements();
+            
+            Driver.FindElement(allProductsElements[0], productAddToCartBtn).Click();
+            Driver.FindElement(allProductsElements[1], productAddToCartBtn).Click();
+            Driver.FindElement(allProductsElements[3], productAddToCartBtn).Click();
+            ClickOnCartIcon();
+
+            return new CartPage(driver);
+        }
+
+        
+        public IWebElement? GetProductElByName(string name)
+        {
+            var allProductsElements = GetAllProductElements();
+            return allProductsElements.Find(el => Driver.FindElement(el, productName).Text == name);
+
+        }
+        public ProductPage SelectProductByNameAndGoToProductPage(string name)
+        {
+            var productEl = GetProductElByName(name);  
+            if (productEl != null)
+            {
+                Driver.FindElement(productEl, productName).Click();
+            }
+
+            return new ProductPage(driver);
+        }
 
     }
 }

@@ -15,13 +15,30 @@ namespace Test.Infrastructure.Pages
 
         public CheckoutPage(IWebDriver driver) : base(driver) { }
 
-        public CheckoutOverviewPage checkout(string firstName, string lastName, string postalCode)
+        public override bool IsPageLoaded()
+        {
+            return Driver.WaitForDisplayed(firstNameInput);
+        }
+
+        public CheckoutOverviewPage Checkout(string firstName, string lastName, string postalCode)
         {
             Driver.TypeTo(firstNameInput, firstName);
             Driver.TypeTo(lastNameInput, lastName);
             Driver.TypeTo(postalCodeInput, postalCode);
             Driver.Click(continueBtn);
 
+            return new CheckoutOverviewPage(driver);
+        }
+
+        public CartPage ClickOnCancel()
+        {
+            Driver.Click(cancelBtn);
+            return new CartPage(driver);
+        }
+
+        public CheckoutOverviewPage ClickOnContinue()
+        {
+            Driver.Click(continueBtn);
             return new CheckoutOverviewPage(driver);
         }
     }

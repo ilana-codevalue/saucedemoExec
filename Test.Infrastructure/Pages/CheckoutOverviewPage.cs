@@ -6,7 +6,7 @@ namespace Test.Infrastructure.Pages
     public class CheckoutOverviewPage : BasePage
     {
 
-        protected readonly By cartList = By.CssSelector(".cart_list");
+        protected readonly By pageTitle = By.CssSelector("span.title");
         protected readonly By cartItem = By.CssSelector(".cart_item");
         protected readonly By itemName = By.CssSelector(".inventory_item_name");
         protected readonly By itemDesc = By.CssSelector(".inventory_item_desc");
@@ -20,10 +20,35 @@ namespace Test.Infrastructure.Pages
 
         public CheckoutOverviewPage(IWebDriver driver) : base(driver) { }
 
+        public override bool IsPageLoaded()
+        {
+            return Driver.FindElement(pageTitle).Text.Contains("Overview");
+        }
+
+        public List<Product> GetItemsDetalisList()
+        {
+            var itemDetailsList = new List<Product>();
+            var items = GetItemsList();
+            foreach (var item in items)
+            {
+                itemDetailsList.Add(GetItemDetails(item));
+            }
+            return itemDetailsList;
+        }
 
         public List<IWebElement> GetItemsList()
         {
             return Driver.FindElements(cartItem).ToList();
+        }
+       
+        public Product GetItemDetails(IWebElement productEl)
+        {
+            return new Product(
+                productEl.FindElement(itemName).Text,
+                productEl.FindElement(itemDesc).Text,
+                productEl.FindElement(itemPrice).Text,
+                null, null
+            );
         }
 
         public double GetSummarySubTotalAmount()
@@ -32,25 +57,6 @@ namespace Test.Infrastructure.Pages
             return double.Parse(subTotalText);
         }
 
-        public double GetSummaryTotalAmount()
-        {
-            var totalText = Driver.FindElement(totalLbl).Text;
-            return double.Parse(totalText);
-        }
-
-        public double CalculateSummaryTotalAmount()
-        {
-            double summaryTotal = 0;
-            var items = GetItemsList();
-            foreach (var price in from item in items
-                                  let price = Driver.FindElement(item, itemPrice).Text
-                                  select price)
-            {
-                summaryTotal += double.Parse(price);
-            }
-
-            return summaryTotal;
-        }
 
         public ProductsPage ClickOnCancel()
         {

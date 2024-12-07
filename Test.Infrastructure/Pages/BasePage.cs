@@ -9,6 +9,7 @@ namespace Test.Infrastructure.Pages
         public readonly Driver Driver;
         protected readonly LeftMenueModule leftMenue;
         
+        public readonly By leftModulemenueBtn = By.CssSelector("#react-burger-menu-btn");
         protected readonly By shoppingCartLink = By.CssSelector(".shopping_cart_link");
         protected readonly By shoppingCartBadge = By.CssSelector(".shopping_cart_badge");
 
@@ -37,6 +38,14 @@ namespace Test.Infrastructure.Pages
             return new CartPage(driver);
         }
 
+
         public int GetCartBadgeNumber() => Int32.Parse(driver.FindElement(shoppingCartBadge).Text);
+
+        public LoginPage ClickOnLogoutLink()
+        {
+            Driver.Click(leftModulemenueBtn);
+            Driver.FindElement(leftMenue.logoutLink).Click();
+            return new LoginPage(driver);
+        }
     }
 }
