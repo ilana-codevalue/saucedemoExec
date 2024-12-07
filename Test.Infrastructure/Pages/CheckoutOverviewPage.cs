@@ -46,7 +46,7 @@ namespace Test.Infrastructure.Pages
             return new Product(
                 productEl.FindElement(itemName).Text,
                 productEl.FindElement(itemDesc).Text,
-                productEl.FindElement(itemPrice).Text,
+                productEl.FindElement(itemPrice).Text.Replace("$",""),
                 null, null
             );
         }
@@ -54,7 +54,7 @@ namespace Test.Infrastructure.Pages
         public double GetSummarySubTotalAmount()
         {
             var subTotalText = Driver.FindElement(subTotalLbl).Text;
-            return double.Parse(subTotalText);
+            return double.Parse(subTotalText.Replace("Item total: $", ""));
         }
 
 

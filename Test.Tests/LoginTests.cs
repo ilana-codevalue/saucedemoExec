@@ -44,8 +44,11 @@ public class LoginTests : BaseTest
         var productPage = loginPage
             .Login(Users.LOCKEDOUT_USER, Users.PASSWORD);
 
-        Assert.That(loginPage.GetLoginErrorMessage(), Does.Contain("user has been locked out"));
-        Assert.That(productPage.IsPageLoaded(), Is.False);
+        Assert.Multiple(() =>
+        {
+            Assert.That(loginPage.GetLoginErrorMessage(), Does.Contain("user has been locked out"));
+            Assert.That(productPage.IsPageLoaded(), Is.False);
+        });
     }
 
     [Test]

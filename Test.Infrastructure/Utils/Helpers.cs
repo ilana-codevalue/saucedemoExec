@@ -27,9 +27,16 @@ namespace Test.Infrastructure.Utils
             }
 
             return selectedProducts;
-
         }
-      
 
+        public static double GetCheckoutCalculatedSummarySubTotal(List<Product> cartlist)
+        {
+            double calculatedSummarySubTotal = 0;
+            foreach (var item in cartlist.Select(x => x.price))
+            {
+                calculatedSummarySubTotal += double.Parse(item);
+            }
+            return calculatedSummarySubTotal;
+        }
     }
 }

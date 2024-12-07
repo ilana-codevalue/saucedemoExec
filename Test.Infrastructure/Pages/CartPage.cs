@@ -37,7 +37,7 @@ namespace Test.Infrastructure.Pages
             return new Product(
                 productEl.FindElement(itemName).Text,
                 productEl.FindElement(itemDesc).Text,
-                productEl.FindElement(itemPrice).Text,
+                productEl.FindElement(itemPrice).Text.Replace("$",""),
                 null,
                 productEl.FindElement(removeItemBtn)
             );

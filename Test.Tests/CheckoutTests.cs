@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Test.Infrastructure;
 using Test.Infrastructure.Consts;
 using Test.Infrastructure.Pages;
+using Test.Infrastructure.Utils;
 
 namespace Test.Tests
 {
@@ -115,17 +116,11 @@ namespace Test.Tests
                 .ClickOnCheckout()
                  .Checkout(TestData.FIRST_NAME, TestData.LAST_NAME, TestData.POSTAL_CODE);
 
-            var checkoutOverviewlList = checkoutOverviewPage
-                .GetItemsDetalisList();
-
             var displayedSubTotal = checkoutOverviewPage.GetSummarySubTotalAmount();
 
-            double calculatedSummarySubTotal = 0;
-            foreach (var item in itemsDetailsList.Select(x => x.price))
-            {
-                calculatedSummarySubTotal += double.Parse(item);
-            }
-
+            // calculating actual subtotal
+            var calculatedSummarySubTotal = Helpers.GetCheckoutCalculatedSummarySubTotal(itemsDetailsList);
+            
             Assert.That(displayedSubTotal, Is.EqualTo(calculatedSummarySubTotal));
         }
 

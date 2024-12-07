@@ -11,7 +11,6 @@ namespace Test.Infrastructure.Pages
         protected readonly By productImage = By.CssSelector(".inventory_details_img");
         protected readonly By backToProductsBtn = By.CssSelector("#back-to-products");
 
-
         public ProductPage(IWebDriver driver): base(driver) { }
 
 
@@ -20,7 +19,7 @@ namespace Test.Infrastructure.Pages
             return new Product(
                 Driver.FindElement(productName).Text,
                 Driver.FindElement(productDescription).Text,
-                Driver.FindElement(productPrice).Text,
+                Driver.FindElement(productPrice).Text.Replace("$",""),
                 Driver.FindElement(productImage),
                 Driver.FindElement(productAddToCartBtn)
             );
@@ -37,7 +36,5 @@ namespace Test.Infrastructure.Pages
             Driver.FindElement(productAddToCartBtn).Click();
             return this;
         }
-
-
     }
 }
