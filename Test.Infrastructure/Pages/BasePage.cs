@@ -6,14 +6,16 @@ namespace Test.Infrastructure.Pages
     public abstract class BasePage
     {
         public readonly IWebDriver driver;
-        //public readonly WebDriverWait wait;
-
+        public readonly Driver Driver;
         protected readonly LeftMenueModule leftMenue;
+        
+        protected readonly By shoppingCartLink = By.CssSelector(".shopping_cart_link");
+        protected readonly By shoppingCartBadge = By.CssSelector(".shopping_cart_badge");
 
         public BasePage(IWebDriver _driver)
         {
             driver = _driver;
-            //wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            Driver = new Driver(_driver);
             leftMenue = new LeftMenueModule();
 
             IsPageLoaded();
@@ -29,26 +31,12 @@ namespace Test.Infrastructure.Pages
             return false;
         }
 
-
-        public bool WaitForDisplayed(By by, double timeout = 5)
+        public CartPage ClickOnCartIcon()
         {
-            try
-            {
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-                return wait.Until(d => d.FindElement(by).Displayed);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            Driver.FindElement(shoppingCartLink).Click();
+            return new CartPage(driver);
         }
 
-        public void SelectFromDropDown(By by, string option)
-        {
-            var dropDownEl = new SelectElement(driver.FindElement(by));
-            dropDownEl.SelectByValue(option);
-        }
-
+        public int GetCartBadgeNumber() => Int32.Parse(driver.FindElement(shoppingCartBadge).Text);
     }
 }

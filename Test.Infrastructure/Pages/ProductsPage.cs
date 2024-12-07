@@ -15,9 +15,6 @@ namespace Test.Infrastructure.Pages
         protected readonly By productImage = By.CssSelector(".inventory_item_img");
         protected readonly By productSortingBtn = By.CssSelector(".product_sort_container");
         protected readonly By sortingBtnActiveOption = By.CssSelector(".active_option");
-        protected readonly By shoppingCartLink = By.CssSelector(".shopping_cart_link");
-        protected readonly By shoppingCartBadge = By.CssSelector(".shopping_cart_badge");
-
 
 
         public ProductsPage(IWebDriver driver) : base(driver)
@@ -27,10 +24,14 @@ namespace Test.Infrastructure.Pages
 
         public override bool IsPageLoaded()
         {
-            return WaitForDisplayed(productsList);
+            return Driver.WaitForDisplayed(productsList);
         }
 
-       
+        public List<IWebElement> GetAllProductElements()
+        {
+            return Driver.FindElements(product).ToList();
+        }
+
         public Product GetProductDetails(IWebElement productEl)
         {
             return new Product(
@@ -40,11 +41,6 @@ namespace Test.Infrastructure.Pages
                 productEl.FindElement(productImage),
                 productEl.FindElement(productAddToCartBtn)
             );
-        }
-
-        public List<IWebElement> GetAllProductElements()
-        {
-            return driver.FindElements(product).ToList();
         }
 
         public bool VerifyProductsDetails(List<IWebElement> productsElements)
@@ -68,17 +64,6 @@ namespace Test.Infrastructure.Pages
                 product.Button != null;
         }
 
-        public string SelectSortingProducts(string sortingOption)
-        {
-            SelectFromDropDown(productSortingBtn, sortingOption);
-            return GetSortingBtnActiveOption();
-        }
-
-        private string GetSortingBtnActiveOption()
-        {
-            return driver.FindElement(sortingBtnActiveOption).Text;
-        }
-
         public List<string> GetProductNameList()
         {
             var products = GetAllProductElements()
@@ -96,22 +81,23 @@ namespace Test.Infrastructure.Pages
             return stringPriceList.Select(double.Parse).ToList();
         }
 
+        public string SelectSortingProducts(string sortingOption)
+        {
+            Driver.SelectFromDropDown(productSortingBtn, sortingOption);
+            return GetSortingBtnActiveOption();
+        }
+
+        private string GetSortingBtnActiveOption()
+        {
+            return Driver.FindElement(sortingBtnActiveOption).Text;
+        }
+
         public void AddProductToCart(IWebElement productEl)
         {
             productEl.FindElement(productAddToCartBtn).Click();
         }
 
-        public CartPage ClickOnCartIcon()
-        {
-            driver.FindElement(shoppingCartLink).Click();
-            return new CartPage(driver);
-        }
-
-        public int GetCartBadgeNumber() => Int32.Parse(driver.FindElement(shoppingCartBadge).Text);
-
         public string GetProductAddToCartBtnText(IWebElement productEl) => productEl.FindElement(productAddToCartBtn).Text;
 
     }
-
-   
 }

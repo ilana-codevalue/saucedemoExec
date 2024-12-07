@@ -15,17 +15,13 @@ namespace Test.Infrastructure.Pages
 
         public override bool IsPageLoaded()
         {
-            //return wait.Until(d => d.FindElement(loginBtn).Displayed);
-            return WaitForDisplayed(loginBtn);
+            return Driver.WaitForDisplayed(loginBtn);
         }
 
         public ProductsPage Login(string username, string passwors)
         {
-            driver.FindElement(usernameInput).Clear();
-            driver.FindElement(usernameInput).SendKeys(username);
-
-            driver.FindElement(passwordInput).Clear();
-            driver.FindElement(passwordInput).SendKeys(passwors);
+            Driver.TypeTo(usernameInput, username);
+            Driver.TypeTo(passwordInput, passwors);
 
             driver.FindElement(loginBtn).Click();
             return new ProductsPage(driver);
@@ -33,12 +29,12 @@ namespace Test.Infrastructure.Pages
 
         public string GetLoginErrorMessage()
         {
-            return driver.FindElement(errorMessage).Text;
+            return Driver.FindElement(errorMessage).Text;
         }
 
         public bool IsLoginError()
         {
-            return driver.FindElement(errorMessage).Displayed;
+            return Driver.FindElement(errorMessage).Displayed;
         }
     }
 }
