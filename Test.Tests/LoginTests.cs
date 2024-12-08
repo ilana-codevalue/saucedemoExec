@@ -51,13 +51,15 @@ public class LoginTests : BaseTest
         });
     }
 
-    [Test]
+    [Test] 
+    // I wasn't sure if i needed to wait for long login or to limit this
+    // user case to timeout and verify test fails
     public void SuccessLoginWithPerformance_glitch_user()
     {
-        //var productPage = homepage
-        //    .NavigateToLoginPage()
-        //    .Login(Users.PERFORMANCE_GLITCH_USER, Users.PASSWORD);
+        var productPage = homepage
+            .NavigateToLoginPage()
+            .Login(Users.PERFORMANCE_GLITCH_USER, Users.PASSWORD);
 
-        //Assert.That(productPage.IsPageLoaded(), Is.True);
+        Assert.That(productPage.IsPageLoaded(), Is.True);
     }
 }

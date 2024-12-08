@@ -39,13 +39,36 @@ namespace Test.Infrastructure.Pages
         }
 
 
-        public int GetCartBadgeNumber() => Int32.Parse(driver.FindElement(shoppingCartBadge).Text);
+        public bool IsCartBadgeNumberExists()
+        {
+            return Driver.WaitForDisplayed(shoppingCartBadge, 1);
+        }
+
 
         public LoginPage ClickOnLogoutLink()
         {
             Driver.Click(leftModulemenueBtn);
             Driver.FindElement(leftMenue.logoutLink).Click();
             return new LoginPage(driver);
+        }
+
+        public ProductsPage ClickOnAllItemsLink()
+        {
+            Driver.Click(leftModulemenueBtn);
+            Driver.FindElement(leftMenue.allItemsLink).Click();
+            return new ProductsPage(driver);
+        }
+
+        public void ClickOnAboutLink()
+        {
+            Driver.Click(leftModulemenueBtn);
+            Driver.FindElement(leftMenue.aboutLink).Click();
+        }
+
+        public void ClickOnResetAppStateLink()
+        {
+            Driver.Click(leftModulemenueBtn);
+            Driver.FindElement(leftMenue.resetAppStateLink).Click();
         }
     }
 }

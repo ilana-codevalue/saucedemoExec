@@ -2,16 +2,12 @@
 
 namespace Test.Infrastructure.Pages
 {
-    public class LoginPage : BasePage
+    public class LoginPage(IWebDriver _driver) : BasePage(_driver)
     {
         protected readonly By loginBtn = By.CssSelector("#login-button");
         protected readonly By usernameInput = By.CssSelector("#user-name");
         protected readonly By passwordInput = By.CssSelector("#password");
         protected readonly By errorMessage = By.CssSelector(".error-message-container.error > h3");
-
-        public LoginPage(IWebDriver _driver) : base(_driver)
-        {
-        }
 
         public override bool IsPageLoaded()
         {
@@ -23,7 +19,7 @@ namespace Test.Infrastructure.Pages
             Driver.TypeTo(usernameInput, username);
             Driver.TypeTo(passwordInput, passwors);
 
-            driver.FindElement(loginBtn).Click();
+            Driver.FindElement(loginBtn).Click();
             return new ProductsPage(driver);
         }
 

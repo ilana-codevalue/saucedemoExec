@@ -1,11 +1,11 @@
 ﻿using OpenQA.Selenium;
 using System.Linq;
+using Test.Infrastructure.Models;
 
 namespace Test.Infrastructure.Pages
 {
-    public class ProductsPage : BasePage
+    public class ProductsPage(IWebDriver driver) : BasePage(driver)
     {
-
         protected readonly By productsList = By.CssSelector(".inventory_list");
         protected readonly By product = By.CssSelector(".inventory_item");
         protected readonly By productName = By.CssSelector(".inventory_item_name");
@@ -16,15 +16,9 @@ namespace Test.Infrastructure.Pages
         protected readonly By productSortingBtn = By.CssSelector(".product_sort_container");
         protected readonly By sortingBtnActiveOption = By.CssSelector(".active_option");
 
-
-        public ProductsPage(IWebDriver driver) : base(driver)
-        {
-
-        }
-
         public override bool IsPageLoaded()
         {
-            return Driver.WaitForDisplayed(productsList);
+            return Driver.WaitForDisplayed(productsList, 3);
         }
 
         public List<IWebElement> GetAllProductElements()
@@ -41,27 +35,6 @@ namespace Test.Infrastructure.Pages
                 productEl.FindElement(productImage),
                 productEl.FindElement(productAddToCartBtn)
             );
-        }
-
-        public bool VerifyProductsDetails(List<IWebElement> productsElements)
-        {
-            foreach (var product in productsElements)
-            {
-                if (!VerifyProductDetails(product))
-                    return false;
-            }
-
-            return true;
-        }
-
-        public bool VerifyProductDetails(IWebElement productEl)
-        {
-            var product = GetProductDetails(productEl);
-            return product.name != string.Empty &&
-                product.description != string.Empty &&
-                product.price != string.Empty &&
-                product.Image != null &&
-                product.Button != null;
         }
 
         public List<string> GetProductNameList()
@@ -142,7 +115,6 @@ namespace Test.Infrastructure.Pages
 
             return new CartPage(driver);
         }
-
         
         public IWebElement? GetProductElByName(string name)
         {
@@ -160,6 +132,5 @@ namespace Test.Infrastructure.Pages
 
             return new ProductPage(driver);
         }
-
     }
 }

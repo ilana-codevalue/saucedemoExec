@@ -1,12 +1,13 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Test.Infrastructure.Consts;
 
 namespace Test.Infrastructure.Pages
 {
     public class HomePage
     {
-        const string BASE_URL = "https://www.saucedemo.com";
-        const string DRIVER_PATH = "C:\\saucedemo\\saucedemoExec\\Test.Infrastructure\\chromedriver.exe";
+        const string BASE_URL = TestData.BASE_URL;
+        const string DRIVER_PATH = TestData.DRIVER_PATH;
 
         protected readonly IWebDriver driver;
 

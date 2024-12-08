@@ -1,8 +1,9 @@
 ﻿using OpenQA.Selenium;
+using Test.Infrastructure.Models;
 
 namespace Test.Infrastructure.Pages
 {
-    public class ProductPage : BasePage
+    public class ProductPage(IWebDriver driver) : BasePage(driver)
     {
         protected readonly By productName = By.CssSelector(".inventory_details_name");
         protected readonly By productDescription = By.CssSelector(".inventory_details_desc");
@@ -11,8 +12,11 @@ namespace Test.Infrastructure.Pages
         protected readonly By productImage = By.CssSelector(".inventory_details_img");
         protected readonly By backToProductsBtn = By.CssSelector("#back-to-products");
 
-        public ProductPage(IWebDriver driver): base(driver) { }
 
+        public override bool IsPageLoaded()
+        {
+            return Driver.WaitForDisplayed(backToProductsBtn);
+        }
 
         public Product GetProductDetails()
         {

@@ -18,7 +18,5 @@ namespace Test.Infrastructure.Consts
 
         public const string PASSWORD = "secret_sauce";
         public const string WRONG_PASSWORD = "wrongpassword";
-
-        
     }
 }

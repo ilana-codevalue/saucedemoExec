@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using Test.Infrastructure.Models;
 using Test.Infrastructure.Pages;
 
 namespace Test.Infrastructure.Utils
@@ -37,6 +38,27 @@ namespace Test.Infrastructure.Utils
                 calculatedSummarySubTotal += double.Parse(item);
             }
             return calculatedSummarySubTotal;
+        }
+
+        public static bool VerifyProductsDetails(List<IWebElement> productsElements, ProductsPage productsPage)
+        {
+            foreach (var product in productsElements)
+            {
+                if (!VerifyProductDetails(product, productsPage))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool VerifyProductDetails(IWebElement productEl, ProductsPage productsPage)
+        {
+            var product = productsPage.GetProductDetails(productEl);
+            return product.name != string.Empty &&
+                product.description != string.Empty &&
+                product.price != string.Empty &&
+                product.Image != null &&
+                product.Button != null;
         }
     }
 }

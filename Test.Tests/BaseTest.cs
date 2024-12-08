@@ -4,7 +4,6 @@ namespace Test.Tests
 {
     public class BaseTest
     {
-
         public required HomePage homepage;
 
         [SetUp]

@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Test.Infrastructure.Pages
+namespace Test.Infrastructure.Models
 {
     public class Product(string _name, string _description, string _price, IWebElement? _Image, IWebElement? _Button)
     {

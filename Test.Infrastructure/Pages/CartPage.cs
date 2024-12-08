@@ -1,8 +1,10 @@
 ﻿using OpenQA.Selenium;
+using System.Linq;
+using Test.Infrastructure.Models;
 
 namespace Test.Infrastructure.Pages
 {
-    public class CartPage : BasePage
+    public class CartPage(IWebDriver driver) : BasePage(driver)
     {
         protected readonly By cartList = By.CssSelector(".cart_list");
         protected readonly By cartItem = By.CssSelector(".cart_item");
@@ -13,18 +15,17 @@ namespace Test.Infrastructure.Pages
         protected readonly By continueShopingBtn = By.CssSelector("#continue-shopping");
         protected readonly By checkoutBtn = By.CssSelector("#checkout");
 
-        public CartPage(IWebDriver driver) : base(driver) { }
+        public override bool IsPageLoaded()
+        {
+            return Driver.WaitForDisplayed(checkoutBtn);
+        }
 
-        
-        
         public List<Product> GetItemsDetalisList()
         {
             var itemDetailsList = new List<Product>();
             var items = GetItemsList();
-            foreach (var item in items)
-            {
-                itemDetailsList.Add(GetItemDetails(item));
-            }
+            itemDetailsList.AddRange(from item in items
+                                     select GetItemDetails(item));
             return itemDetailsList;
         }
         public List<IWebElement> GetItemsList()

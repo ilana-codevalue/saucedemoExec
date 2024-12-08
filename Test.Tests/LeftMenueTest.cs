@@ -25,7 +25,20 @@ namespace Test.Tests
             var cartPage = productsPage
                 .CreatSampleCartListAndGoToCartPage();
 
+            productsPage = cartPage.ClickOnAllItemsLink();
+
+            Assert.That(productsPage.IsPageLoaded(), Is.True);
+        }
+
+        [Test]
+        public void VerifyResetAppState()
+        {
+            var cartPage = productsPage.CreatSampleCartListAndGoToCartPage();
             
+            Assert.That(cartPage.IsCartBadgeNumberExists(), Is.True);
+            
+            cartPage.ClickOnResetAppStateLink();
+            Assert.That(cartPage.IsCartBadgeNumberExists(), Is.False);
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using OpenQA.Selenium;
 using System.Linq;
+using Test.Infrastructure.Models;
 
 namespace Test.Infrastructure.Pages
 {
-    public class CheckoutOverviewPage : BasePage
+    public class CheckoutOverviewPage(IWebDriver driver) : BasePage(driver)
     {
-
         protected readonly By pageTitle = By.CssSelector("span.title");
         protected readonly By cartItem = By.CssSelector(".cart_item");
         protected readonly By itemName = By.CssSelector(".inventory_item_name");
@@ -13,12 +13,8 @@ namespace Test.Infrastructure.Pages
         protected readonly By itemPrice = By.CssSelector(".inventory_item_price");
         protected readonly By subTotalLbl = By.CssSelector(".summary_subtotal_label");
         protected readonly By totalLbl = By.CssSelector(".summary_total_label");
-
-
         protected readonly By cancelBtn = By.CssSelector("#cancel");
         protected readonly By finishBtn = By.CssSelector("#finish");
-
-        public CheckoutOverviewPage(IWebDriver driver) : base(driver) { }
 
         public override bool IsPageLoaded()
         {
@@ -56,7 +52,6 @@ namespace Test.Infrastructure.Pages
             var subTotalText = Driver.FindElement(subTotalLbl).Text;
             return double.Parse(subTotalText.Replace("Item total: $", ""));
         }
-
 
         public ProductsPage ClickOnCancel()
         {

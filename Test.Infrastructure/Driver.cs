@@ -71,7 +71,7 @@ namespace Test.Infrastructure
         }
 
 
-        public bool WaitForDisplayed(By by, double timeout = 10)
+        public bool WaitForDisplayed(By by, double timeout = 5)
         {
             try
             {

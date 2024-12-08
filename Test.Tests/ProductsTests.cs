@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Infrastructure.Consts;
 using Test.Infrastructure.Pages;
+using Test.Infrastructure.Utils;
 
 namespace Test.Tests
 {
@@ -24,7 +25,7 @@ namespace Test.Tests
         public void VerifyProductDetailsDisplayed()
         {
             var products = productsPage.GetAllProductElements();
-            Assert.That(productsPage.VerifyProductsDetails(products), Is.EqualTo(true));
+            Assert.That(Helpers.VerifyProductsDetails(products, productsPage), Is.EqualTo(true));
         }
 
         [Test]
