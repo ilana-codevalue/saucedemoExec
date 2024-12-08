@@ -18,7 +18,7 @@ namespace Test.Infrastructure.Pages
 
         public override bool IsPageLoaded()
         {
-            return Driver.WaitForDisplayed(productsList, 3);
+            return Driver.WaitForDisplayed(productsList);
         }
 
         public List<IWebElement> GetAllProductElements()

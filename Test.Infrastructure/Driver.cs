@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using NUnit.Framework;
+using System.Threading;
 
 namespace Test.Infrastructure
 {
@@ -20,13 +22,26 @@ namespace Test.Infrastructure
         public IWebElement FindElement(By by, double timeoutInSeconds = 0, Predicate<IWebElement> predicate = null)
         {
             IReadOnlyCollection<IWebElement> elements = FindElements(by, timeoutInSeconds, predicate);
-            return elements.Count != 0 ? elements.First() : null;
+
+            if (elements.Count == 0)
+            {
+                TestContext.WriteLine($"Element locator {by} not found after {timeoutInSeconds} sec");
+                return null;
+            }
+            else
+                return elements.First();
         }
 
         public IWebElement FindElement(IWebElement root, By by, double timeoutInSeconds = 0, Predicate<IWebElement> predicate = null)
         {
             IReadOnlyCollection<IWebElement> elements = FindElements(root, by, timeoutInSeconds, predicate);
-            return elements.Count != 0 ? elements.First() : null;
+            if (elements.Count == 0)
+            {
+                TestContext.WriteLine($"Element locator {by} not found after {timeoutInSeconds} sec");
+                return null;
+            }
+            else
+                return elements.First();
         }
 
         public IReadOnlyCollection<IWebElement> FindElements(By by, double timeoutInSeconds = 0, Predicate<IWebElement> predicate = null)
@@ -59,6 +74,8 @@ namespace Test.Infrastructure
             if (el != null)
             {
                 el.Clear();
+
+                TestContext.WriteLine($"Typing {keys} to input");
                 el.SendKeys(keys);
             }
             return this;
@@ -75,6 +92,7 @@ namespace Test.Infrastructure
         {
             try
             {
+                TestContext.WriteLine($"Waiting for locator {by} to be display");
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
                 return wait.Until(d => d.FindElement(by).Displayed);
             }
@@ -88,6 +106,8 @@ namespace Test.Infrastructure
         public Driver SelectFromDropDown(By by, string option)
         {
             var dropDownEl = new SelectElement(driver.FindElement(by));
+            
+            TestContext.WriteLine($"Selecting option: {option}");
             dropDownEl.SelectByValue(option);
             return this;
         }

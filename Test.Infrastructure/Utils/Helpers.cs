@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using Test.Infrastructure.Models;
 using Test.Infrastructure.Pages;
@@ -59,6 +60,20 @@ namespace Test.Infrastructure.Utils
                 product.price != string.Empty &&
                 product.Image != null &&
                 product.Button != null;
+        }
+
+        public static void Assert(Action action)
+        {
+            try
+            {
+                action();
+                TestContext.WriteLine("Test Pass.");
+            }
+            catch (AssertionException ex)
+            {
+                TestContext.WriteLine($"Assertion Failed: {ex.Message}");
+                throw;
+            }
         }
     }
 }

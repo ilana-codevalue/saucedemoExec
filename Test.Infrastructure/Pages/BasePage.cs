@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace Test.Infrastructure.Pages
@@ -48,6 +49,8 @@ namespace Test.Infrastructure.Pages
         public LoginPage ClickOnLogoutLink()
         {
             Driver.Click(leftModulemenueBtn);
+
+            TestContext.WriteLine("Logging out..");
             Driver.FindElement(leftMenue.logoutLink).Click();
             return new LoginPage(driver);
         }
@@ -68,6 +71,7 @@ namespace Test.Infrastructure.Pages
         public void ClickOnResetAppStateLink()
         {
             Driver.Click(leftModulemenueBtn);
+            TestContext.WriteLine("Reseting App state..");
             Driver.FindElement(leftMenue.resetAppStateLink).Click();
         }
     }

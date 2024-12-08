@@ -33,7 +33,7 @@ namespace Test.Tests
                 .ClickOnCheckout()
                 .Checkout(TestData.FIRST_NAME, TestData.LAST_NAME, TestData.POSTAL_CODE);
 
-            Assert.That(checkoutOverviewPage.IsPageLoaded(), Is.True);
+            Helpers.Assert(() => Assert.That(checkoutOverviewPage.IsPageLoaded(), Is.True));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Test.Tests
                 .ClickOnCheckout()
                 .Checkout(TestData.FIRST_NAME, string.Empty, TestData.POSTAL_CODE);
 
-            Assert.That(checkoutOverviewPage.IsPageLoaded(), Is.False);
+            Helpers.Assert(() => Assert.That(checkoutOverviewPage.IsPageLoaded(), Is.False));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Test.Tests
             var returnedItemDetailList = cartPage
                 .GetItemsDetalisList().Select( x => x.name).ToList();
 
-            Assert.That(returnedItemDetailList, Is.EqualTo(itemsDetailsList));
+            Helpers.Assert(() => Assert.That(returnedItemDetailList, Is.EqualTo(itemsDetailsList)));
         }
 
 
@@ -84,12 +84,13 @@ namespace Test.Tests
             var checkoutOverviewlList = checkoutOverviewPage
                 .GetItemsDetalisList();
 
+            Helpers.Assert(() =>
             Assert.Multiple(() =>
             {
                 Assert.That(checkoutOverviewlList.Select(x => x.name), Is.EqualTo(itemsDetailsList.Select(x => x.name)));
                 Assert.That(checkoutOverviewlList.Select(x => x.description), Is.EqualTo(itemsDetailsList.Select(x => x.description)));
                 Assert.That(checkoutOverviewlList.Select(x => x.price), Is.EqualTo(itemsDetailsList.Select(x => x.price)));
-            });
+            }));
         }
 
         [Test]
@@ -102,8 +103,8 @@ namespace Test.Tests
                  .Checkout(TestData.FIRST_NAME, TestData.LAST_NAME, TestData.POSTAL_CODE)
                  .ClickOnFinish();
 
-            
-           Assert.That(checkoutCompletePage.IsPageLoaded(), Is.True);
+
+            Helpers.Assert(() => Assert.That(checkoutCompletePage.IsPageLoaded(), Is.True));
         }
 
         [Test]
@@ -121,7 +122,7 @@ namespace Test.Tests
             // calculating actual subtotal
             var calculatedSummarySubTotal = Helpers.GetCheckoutCalculatedSummarySubTotal(itemsDetailsList);
             
-            Assert.That(displayedSubTotal, Is.EqualTo(calculatedSummarySubTotal));
+            Helpers.Assert(() => Assert.That(displayedSubTotal, Is.EqualTo(calculatedSummarySubTotal)));
         }
 
         [Test]
@@ -145,7 +146,7 @@ namespace Test.Tests
                 if (product != null)
                 {
                     var btnText = productsPage.GetProductAddToCartBtnText(product);
-                    Assert.That("Remove", Is.EqualTo(btnText));
+                    Helpers.Assert(() => Assert.That("Remove", Is.EqualTo(btnText)));
                 }
             }
         }
@@ -158,8 +159,12 @@ namespace Test.Tests
         public void VerifyCheckoutCompletePage()
         {
             var checkoutCompletePage = DoSuccessCheckoutAndFinish();
-            Assert.IsNotEmpty(checkoutCompletePage.GetCompleteChckoutTitle());
-            Assert.IsNotEmpty(checkoutCompletePage.GetCompleteChckoutDescription());
+            Helpers.Assert(() =>
+            Assert.Multiple(() =>
+            {
+                Assert.That(checkoutCompletePage.GetCompleteChckoutTitle(), Is.Not.Empty);
+                Assert.That(checkoutCompletePage.GetCompleteChckoutDescription(), Is.Not.Empty);
+            }));
         }
 
         [Test]
@@ -176,7 +181,7 @@ namespace Test.Tests
                 if (product != null)
                 {
                     var btnText = productsPage.GetProductAddToCartBtnText(product);
-                    Assert.That("Add to cart", Is.EqualTo(btnText));
+                    Helpers.Assert(() => Assert.That("Add to cart", Is.EqualTo(btnText)));
                 }
             }
         }

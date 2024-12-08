@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 
 namespace Test.Infrastructure.Pages
 {
@@ -14,13 +15,28 @@ namespace Test.Infrastructure.Pages
             return Driver.WaitForDisplayed(loginBtn);
         }
 
-        public ProductsPage Login(string username, string passwors)
+        public ProductsPage Login(string username, string password)
         {
             Driver.TypeTo(usernameInput, username);
-            Driver.TypeTo(passwordInput, passwors);
+            Driver.TypeTo(passwordInput, password);
 
+            TestContext.WriteLine($"Login with username: {username}");
             Driver.FindElement(loginBtn).Click();
             return new ProductsPage(driver);
+        }
+
+        public LoginPage FillLogin(string username, string password)
+        {
+            Driver.TypeTo(usernameInput, username);
+            Driver.TypeTo(passwordInput, password);
+            
+            TestContext.WriteLine($"Login with username: {username}");
+            return this;
+        }
+
+        public void ClickLogin()
+        {
+            Driver.FindElement(loginBtn).Click();
         }
 
         public string GetLoginErrorMessage()

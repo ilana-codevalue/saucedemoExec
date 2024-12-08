@@ -1,7 +1,9 @@
 ﻿using Test.Infrastructure.Consts;
+using Test.Infrastructure.Utils;
 
 namespace Test.Tests;
 
+[TestFixture]
 public class LoginTests : BaseTest
 {
 
@@ -12,43 +14,28 @@ public class LoginTests : BaseTest
             .NavigateToLoginPage()
             .Login(Users.STANDARD_USER, Users.PASSWORD);
 
-        Assert.That(productPage.IsPageLoaded(), Is.True);
+        Helpers.Assert(() => Assert.That(productPage.IsPageLoaded(), Is.True));
     }
 
     [Test]
-    public void FailLoginWithWrongUser()
-    {
-        var productPage = homepage
-            .NavigateToLoginPage()
-            .Login(Users.WRONG_USER, Users.PASSWORD);
-
-        Assert.That(productPage.IsPageLoaded(), Is.False);
-    }
-
-    [Test]
-    public void FailLoginWithWrongPassword()
-    {
-        var productPage = homepage
-            .NavigateToLoginPage()
-            .Login(Users.STANDARD_USER, Users.WRONG_PASSWORD);
-
-        Assert.That(productPage.IsPageLoaded(), Is.False);
-    }
-
-    [Test]
-    public void FailLoginWithLockedoutUser()
+    [TestCase(Users.WRONG_USER, Users.PASSWORD, "do not match")]
+    [TestCase(Users.STANDARD_USER, Users.WRONG_PASSWORD, "do not match")]
+    [TestCase(Users.LOCKEDOUT_USER, Users.PASSWORD, "locked out")]
+    public void FailLoginWithWrongUser(string username, string password, string error)
     {
         var loginPage = homepage
-            .NavigateToLoginPage();
+             .NavigateToLoginPage();
+        loginPage
+            .FillLogin(username, password)
+            .ClickLogin();
 
-        var productPage = loginPage
-            .Login(Users.LOCKEDOUT_USER, Users.PASSWORD);
-
+        Helpers.Assert(() =>
         Assert.Multiple(() =>
         {
-            Assert.That(loginPage.GetLoginErrorMessage(), Does.Contain("user has been locked out"));
-            Assert.That(productPage.IsPageLoaded(), Is.False);
-        });
+            Assert.That(loginPage.IsLoginError(), Is.True);
+            Assert.That(loginPage.GetLoginErrorMessage().Contains(error), Is.True);
+        }));
+
     }
 
     [Test] 
@@ -60,6 +47,7 @@ public class LoginTests : BaseTest
             .NavigateToLoginPage()
             .Login(Users.PERFORMANCE_GLITCH_USER, Users.PASSWORD);
 
-        Assert.That(productPage.IsPageLoaded(), Is.True);
+        Helpers.Assert(() =>
+        Assert.That(productPage.IsPageLoaded(), Is.True));
     }
 }

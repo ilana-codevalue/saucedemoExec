@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Infrastructure.Consts;
 using Test.Infrastructure.Pages;
+using Test.Infrastructure.Utils;
 
 namespace Test.Tests
 {
+    [TestFixture]
     public class CartTests : BaseTest
     {
         public required ProductsPage productsPage;
@@ -24,8 +26,8 @@ namespace Test.Tests
         {
             var cartPage = productsPage.CreatSampleCartListAndGoToCartPage();
             var itemElList = cartPage.GetItemsList();
-
-            Assert.That(cartPage.VerifyItemsDetails(itemElList), Is.True);
+            Helpers.Assert(() =>
+            Assert.That(cartPage.VerifyItemsDetails(itemElList), Is.True));
         }
 
         [Test]
@@ -39,7 +41,7 @@ namespace Test.Tests
 
             cartPage.RemoveItem(itemToRemove);
             
-            Assert.That(cartPage.IsItemExists(itemDetails.name), Is.False);
+            Helpers.Assert(() => Assert.That(cartPage.IsItemExists(itemDetails.name), Is.False));
         }
 
         [Test]
@@ -58,11 +60,11 @@ namespace Test.Tests
                 if (product != null)
                 {
                     var btnText = productsPage.GetProductAddToCartBtnText(product);
-                    Assert.That("Remove", Is.EqualTo(btnText));
+                    Helpers.Assert(() => Assert.That("Remove", Is.EqualTo(btnText)));
                 }
                 
             }
-            Assert.That(productsPage.IsPageLoaded(), Is.True);
+            Helpers.Assert(() => Assert.That(productsPage.IsPageLoaded(), Is.True));
         }
 
         [Test]
@@ -71,7 +73,7 @@ namespace Test.Tests
             var cartPage = productsPage.CreatSampleCartListAndGoToCartPage();
             var checkoutPage = cartPage.ClickOnCheckout();
            
-            Assert.That(checkoutPage.IsPageLoaded(), Is.True);
+            Helpers.Assert(() => Assert.That(checkoutPage.IsPageLoaded(), Is.True));
         }
 
     }

@@ -25,7 +25,7 @@ namespace Test.Tests
         public void VerifyProductDetailsDisplayed()
         {
             var products = productsPage.GetAllProductElements();
-            Assert.That(Helpers.VerifyProductsDetails(products, productsPage), Is.EqualTo(true));
+            Helpers.Assert(() => Assert.That(Helpers.VerifyProductsDetails(products, productsPage), Is.EqualTo(true)));
         }
 
         [Test]
@@ -34,13 +34,13 @@ namespace Test.Tests
             var activeSorting = productsPage
                 .SelectSortingProducts(SortingOptions.Name_AToZ);
 
-            Assert.That(activeSorting, Does.Contain("A to Z"));
+            Helpers.Assert(() => Assert.That(activeSorting, Does.Contain("A to Z")));
 
             var productNameList = productsPage.GetProductNameList();
             var sortedList = productsPage.GetProductNameList();
             sortedList.Sort();
 
-            Assert.That(productNameList.SequenceEqual(sortedList));
+            Helpers.Assert(() => Assert.That(productNameList.SequenceEqual(sortedList)));
         }
 
         [Test]
@@ -49,13 +49,13 @@ namespace Test.Tests
             var activeSorting = productsPage
                 .SelectSortingProducts(SortingOptions.Name_ZToA);
 
-            Assert.That(activeSorting, Does.Contain("Z to A"));
+            Helpers.Assert(() => Assert.That(activeSorting, Does.Contain("Z to A")));
 
             var productNameList = productsPage.GetProductNameList();
             var sortedList = productsPage.GetProductNameList();
             sortedList.Sort((x, y) => y.CompareTo(x)); // sort in desending order
 
-            Assert.That(productNameList.SequenceEqual(sortedList));
+            Helpers.Assert(() => Assert.That(productNameList.SequenceEqual(sortedList)));
         }
 
         [Test]
@@ -64,13 +64,13 @@ namespace Test.Tests
             var activeSorting = productsPage
                 .SelectSortingProducts(SortingOptions.Price_Low_To_High);
 
-            Assert.That(activeSorting, Does.Contain("low to high"));
+            Helpers.Assert(() => Assert.That(activeSorting, Does.Contain("low to high")));
 
             var productPriceList = productsPage.GetProductPriceList();
             var sortedList = productsPage.GetProductPriceList();
             sortedList.Sort();
 
-            Assert.That(productPriceList.SequenceEqual(sortedList));
+            Helpers.Assert(() => Assert.That(productPriceList.SequenceEqual(sortedList)));
         }
 
         [Test]
@@ -79,13 +79,13 @@ namespace Test.Tests
             var activeSorting = productsPage
                 .SelectSortingProducts(SortingOptions.Price_High_To_Low);
 
-            Assert.That(activeSorting, Does.Contain("high to low"));
+            Helpers.Assert(() => Assert.That(activeSorting, Does.Contain("high to low")));
 
             var productPriceList = productsPage.GetProductPriceList();
             var sortedList = productsPage.GetProductPriceList();
             sortedList.Sort((x, y) => y.CompareTo(x)); // sort in desending order
 
-            Assert.That(productPriceList.SequenceEqual(sortedList));
+            Helpers.Assert(() => Assert.That(productPriceList.SequenceEqual(sortedList)));
         }
 
 
@@ -99,7 +99,7 @@ namespace Test.Tests
                 .AddOrRemoveProductToCart(productToAdd);
            
             var btnText = productsPage.GetProductAddToCartBtnText(productToAdd);
-            Assert.That(btnText, Is.EqualTo("Remove"));
+            Helpers.Assert(() => Assert.That(btnText, Is.EqualTo("Remove")));
         }
 
         [Test]
@@ -112,14 +112,14 @@ namespace Test.Tests
             productsPage.AddOrRemoveProductToCart(productToAdd);
 
             var btnText = productsPage.GetProductAddToCartBtnText(productToAdd);
-            Assert.That(btnText, Is.EqualTo("Remove"));
+            Helpers.Assert(() => Assert.That(btnText, Is.EqualTo("Remove")));
 
             // Act
             productsPage
                 .AddOrRemoveProductToCart(productToAdd, true);
 
             btnText = productsPage.GetProductAddToCartBtnText(productToAdd);
-            Assert.That(btnText, Is.EqualTo("Add to cart"));
+            Helpers.Assert(() => Assert.That(btnText, Is.EqualTo("Add to cart")));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Test.Tests
                 .ClickOnCartIcon();
 
             var IsProducrInCart = cartPage.IsItemExists(productDetails.name);
-            Assert.That(IsProducrInCart, Is.True);
+            Helpers.Assert(() => Assert.That(IsProducrInCart, Is.True));
         }
         [Test]
         public void SuccessRemoveItemFromCart()
@@ -150,7 +150,7 @@ namespace Test.Tests
                 .ClickOnCartIcon();
 
             var IsProducrInCart = cartPage.IsItemExists(productDetails.name);
-            Assert.That(IsProducrInCart, Is.True);
+            Helpers.Assert(() => Assert.That(IsProducrInCart, Is.True));
 
 
             // Act
@@ -165,11 +165,7 @@ namespace Test.Tests
                 .ClickOnCartIcon();
 
             IsProducrInCart = cartPage.IsItemExists(productDetails.name);
-            Assert.That(IsProducrInCart, Is.False);
+            Helpers.Assert(() => Assert.That(IsProducrInCart, Is.False) );
         }
-
-
-
-
     }
 }
