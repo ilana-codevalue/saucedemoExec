@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Test.Infrastructure.Consts
 {
-    public static class Users
+    public class Users
     {
         public const string STANDARD_USER = "standard_user";
         public const string LOCKEDOUT_USER = "locked_out_user";

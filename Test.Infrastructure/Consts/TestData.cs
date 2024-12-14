@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Test.Infrastructure.Consts
 {
-    public static class TestData
+    public class TestData
     {
         public const string BASE_URL = "https://www.saucedemo.com";
         public const string DRIVER_PATH = "C:\\saucedemo\\saucedemoExec\\Test.Infrastructure\\chromedriver.exe";
